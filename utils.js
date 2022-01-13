@@ -26,9 +26,20 @@ const withdrawMoney = (money) => {};
 
 const transferMoney = (money, id1, id2) => {};
 
-const showUser = (id) => {};
+const showUser = (id) => {
+    const users = loadUsers();
+    const user = users.find((user) => user.id === id);
+    if (user) {
+        return user;
+    } else {
+        return `User with ID "${id}" not found`;
+    }
+};
 
-const showUsers = () => {};
+const showUsers = () => {
+    const users = loadUsers();
+    return users;
+};
 
 const loadUsers = () => {
     try {
