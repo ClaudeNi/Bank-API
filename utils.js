@@ -1,21 +1,16 @@
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 
-const createUser = (id = uuidv4(), cash = 0, credit = 0) => {
+const createUser = (cash = 0, credit = 0) => {
     const users = loadUsers();
-    const checkID = users.find((user) => user.id === id);
-    if (checkID) {
-        return id;
-    } else {
-        const user = {
-            id: id,
-            cash: cash,
-            credit: credit,
-        };
-        users.push(user);
-        saveUsers(users);
-        return user;
-    }
+    const user = {
+        id: uuidv4(),
+        cash: cash,
+        credit: credit,
+    };
+    users.push(user);
+    saveUsers(users);
+    return user;
 };
 
 const depositeCash = (cash) => {};

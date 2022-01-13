@@ -9,11 +9,24 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-    res.send("Showing all users");
+    const users = utils.showAll();
+    res.status(200).send(users);
 });
 
-app.get("/user/:id", (req, res) => {
-    res.send("showing a user");
+app.get("/users/:id", (req, res) => {
+    const response = utils.showUser(req.params.id);
+    if (typeof response === "string") {
+        res.status(400).send(response);
+    }
+    res.status(200).send(response);
+});
+
+app.post("/users", (req, res) => {
+    args = req.body;
+    const user = utils.create(args.cash, args.credit);
+    res.status(2001).send(
+        `User with ID "${user.id}", cash "${user.cash}" and credit "${user.credit}" created.`
+    );
 });
 
 const PORT = 3000;
