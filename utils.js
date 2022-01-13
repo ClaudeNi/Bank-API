@@ -1,16 +1,21 @@
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 
-const createUser = (cash = 0, credit = 0) => {
+const createUser = (id = uuidv4(), cash = 0, credit = 0) => {
     const users = loadUsers();
-    const user = {
-        id: uuidv4(),
-        cash: cash,
-        credit: credit,
-    };
-    users.push(user);
-    saveUsers(users);
-    return user;
+    const checkUser = users.find((user) => user.id === id);
+    if (checkUser) {
+        return `User with the ID "${id}" already exists!`;
+    } else {
+        const user = {
+            id: id,
+            cash: cash,
+            credit: credit,
+        };
+        users.push(user);
+        saveUsers(users);
+        return user;
+    }
 };
 
 const depositeCash = (cash) => {};

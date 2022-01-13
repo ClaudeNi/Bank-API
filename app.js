@@ -23,11 +23,16 @@ app.get("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
     args = req.body;
-    const user = utils.create(args.cash, args.credit);
-    res.status(2001).send(
-        `User with ID "${user.id}", cash "${user.cash}" and credit "${user.credit}" created.`
+    const response = utils.create(args.id, args.cash, args.credit);
+    if (typeof response === "string") {
+        res.status(400).send(response);
+    }
+    res.status(201).send(
+        `User with ID "${response.id}", cash "${response.cash}" and credit "${response.credit}" created.`
     );
 });
+
+app.put("/users", (req, res) => {});
 
 const PORT = 3000;
 app.listen(PORT, () => {
