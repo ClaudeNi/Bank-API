@@ -46,6 +46,7 @@ app.put("/users", (req, res) => {
             }
             res.status(400).send(`Something went wrong.`);
             break;
+
         case "update":
             response = utils.update(args.id, args.money);
             if (response) {
@@ -55,6 +56,7 @@ app.put("/users", (req, res) => {
             }
             res.status(400).send(`Something went wrong.`);
             break;
+
         case "withdraw":
             response = utils.withdraw(args.id, args.money);
             if (response) {
@@ -64,12 +66,17 @@ app.put("/users", (req, res) => {
             }
             res.status(400).send(`Couldn't process your action.`);
             break;
+
         case "transfer":
             response = utils.transfer(args.id1, args.id2, args.money);
-            res.status(200).send(
-                `Transfered ${args.money}$ from user with ID "${args.id1}" to user with ID "${args.id2}"`
-            );
+            if (response) {
+                res.status(200).send(
+                    `Transfered ${args.money}$ from user with ID "${args.id1}" to user with ID "${args.id2}"`
+                );
+            }
+            res.status(400).send(`Couldn't process your action.`);
             break;
+
         default:
             res.status(400).send(
                 `Something went wrong with the action "${args.action}"`

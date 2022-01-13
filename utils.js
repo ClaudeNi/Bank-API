@@ -61,7 +61,30 @@ const withdrawMoney = (id, money) => {
     return false;
 };
 
-const transferMoney = (id1, id2, money) => {};
+const transferMoney = (id1, id2, money) => {
+    const users = loadUsers();
+    const user1 = users.filter((user) => user.id === id1)[0];
+    const user2 = users.filter((user) => user.id === id2)[0];
+    const user1Index = users.indexOf(user1);
+    const user2Index = users.indexOf(user2);
+    if (user1Index !== -1 && user2Index !== -1) {
+        if (users[user1Index].cash > 0 && users[user1Index].cash - money >= 0) {
+            users[user1Index].cash -= money;
+            users[user2Index].cash += money;
+            saveUsers(users);
+            return true;
+        } else if (
+            users[user1Index].credit > 0 &&
+            users[user1Index].credit - money >= 0
+        ) {
+            users[user1Index].credit -= money;
+            users[user2Index].cash += money;
+            saveUsers(users);
+            return true;
+        }
+    }
+    return false;
+};
 
 const showUser = (id) => {
     const users = loadUsers();
