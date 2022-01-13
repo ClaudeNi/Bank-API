@@ -1,6 +1,22 @@
 const fs = require("fs");
+const { v4: uuidv4 } = require("uuid");
 
-const createUser = () => {};
+const createUser = (id = uuidv4(), cash = 0, credit = 0) => {
+    const users = loadUsers();
+    const checkID = users.find((user) => user.id === id);
+    if (checkID) {
+        return id;
+    } else {
+        const user = {
+            id: id,
+            cash: cash,
+            credit: credit,
+        };
+        users.push(user);
+        saveUsers(users);
+        return user;
+    }
+};
 
 const depositeCash = (cash) => {};
 
@@ -14,11 +30,22 @@ const showUser = (id) => {};
 
 const showUsers = () => {};
 
-const getUsers = () => {};
+const loadUsers = () => {
+    try {
+        const dataBuffer = fs.readFileSync("users.json");
+        const dataJSON = dataBuffer.toString();
+        return JSON.parse(dataJSON);
+    } catch (e) {
+        return [];
+    }
+};
 
-const saveUsers = () => {};
+const saveUsers = (users) => {
+    const dataJSON = JSON.stringify(users);
+    fs.writeFileSync("users.json", dataJSON);
+};
 
-module.exports({
+module.exports = {
     create: createUser,
     deposite: depositeCash,
     update: updateCredit,
@@ -26,4 +53,4 @@ module.exports({
     transfer: transferMoney,
     showUser: showUser,
     showAll: showUsers,
-});
+};
