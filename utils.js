@@ -18,13 +18,31 @@ const createUser = (id = uuidv4(), cash = 0, credit = 0) => {
     }
 };
 
-const depositeCash = (cash) => {};
+const updateFunc = (id, money, where) => {
+    if (money > 0) {
+        const users = loadUsers();
+        const user = users.filter((user) => user.id === id)[0];
+        const userIndex = users.indexOf(user);
+        if (userIndex !== -1) {
+            users[userIndex][where] += money;
+            saveUsers(users);
+            return true;
+        }
+    }
+    return false;
+};
 
-const updateCredit = (credit) => {};
+const depositCash = (id, money) => {
+    return updateFunc(id, money, "cash");
+};
 
-const withdrawMoney = (money) => {};
+const updateCredit = (id, money) => {
+    return updateFunc(id, money, "credit");
+};
 
-const transferMoney = (money, id1, id2) => {};
+const withdrawMoney = (id, money) => {};
+
+const transferMoney = (id1, id2, money) => {};
 
 const showUser = (id) => {
     const users = loadUsers();
@@ -58,7 +76,7 @@ const saveUsers = (users) => {
 
 module.exports = {
     create: createUser,
-    deposite: depositeCash,
+    deposit: depositCash,
     update: updateCredit,
     withdraw: withdrawMoney,
     transfer: transferMoney,

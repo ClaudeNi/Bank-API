@@ -34,27 +34,35 @@ app.post("/users", (req, res) => {
 
 app.put("/users", (req, res) => {
     args = req.body;
+    let response;
     switch (args.action) {
         case "deposit":
-            const response = utils.deposite(args.id, args.cash);
-            res.status(200).send(
-                `Deposited ${args.cash}$ into the user with ID "${args.id}"`
-            );
+            response = utils.deposit(args.id, args.money);
+            if (response) {
+                console.log("in");
+                res.status(200).send(
+                    `Deposited ${args.money}$ into the user with ID "${args.id}"`
+                );
+            }
+            res.status(400).send(`Something went wrong.`);
             break;
         case "update":
-            const response = utils.update(args.id, args.credit);
-            res.status(200).send(
-                `New credit balance is ${args.credit} for the user with ID "${args.id}"`
-            );
+            response = utils.update(args.id, args.money);
+            if (response) {
+                res.status(200).send(
+                    `added ${args.money}$ to the credit balance for the user with ID "${args.id}"`
+                );
+            }
+            res.status(400).send(`Something went wrong.`);
             break;
         case "withdraw":
-            const response = utils.withdraw(args.id, args.money);
+            response = utils.withdraw(args.id, args.money);
             res.status(200).send(
                 `Withdrew ${args.money} from user with ID "${args.id}"`
             );
             break;
         case "transfer":
-            const response = utils.transfer(args.id1, args.id2, args.money);
+            response = utils.transfer(args.id1, args.id2, args.money);
             res.status(200).send(
                 `Transfered ${args.money}$ from user with ID "${args.id1}" to user with ID "${args.id2}"`
             );
