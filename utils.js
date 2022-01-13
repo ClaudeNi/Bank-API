@@ -40,7 +40,26 @@ const updateCredit = (id, money) => {
     return updateFunc(id, money, "credit");
 };
 
-const withdrawMoney = (id, money) => {};
+const withdrawMoney = (id, money) => {
+    const users = loadUsers();
+    const user = users.filter((user) => user.id === id)[0];
+    const userIndex = users.indexOf(user);
+    if (userIndex !== -1) {
+        if (users[userIndex].cash > 0 && users[userIndex].cash - money >= 0) {
+            users[userIndex].cash -= money;
+            saveUsers(users);
+            return true;
+        } else if (
+            users[userIndex].credit > 0 &&
+            users[userIndex].credit - money >= 0
+        ) {
+            users[userIndex].credit -= money;
+            saveUsers(users);
+            return true;
+        }
+    }
+    return false;
+};
 
 const transferMoney = (id1, id2, money) => {};
 

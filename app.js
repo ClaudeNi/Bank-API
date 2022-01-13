@@ -57,9 +57,12 @@ app.put("/users", (req, res) => {
             break;
         case "withdraw":
             response = utils.withdraw(args.id, args.money);
-            res.status(200).send(
-                `Withdrew ${args.money} from user with ID "${args.id}"`
-            );
+            if (response) {
+                res.status(200).send(
+                    `Withdrew ${args.money} from user with ID "${args.id}"`
+                );
+            }
+            res.status(400).send(`Couldn't process your action.`);
             break;
         case "transfer":
             response = utils.transfer(args.id1, args.id2, args.money);
